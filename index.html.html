@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine</title>
+  <style>
+    body {
+      margin: 0; 
+      height: 100vh;
+      background: pink;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      position: relative;
+    }
+
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 26px;
+      z-index: 10;
+      position: relative;
+    }
+
+    button {
+      font-size: 22px;
+      padding: 12px 35px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+      margin: 15px;
+    }
+
+    .firework {
+      position: absolute;
+      font-size: 50px;
+      animation: explode 1.2s forwards ease-out;
+      pointer-events: none;
+      color: black;
+    }
+
+    @keyframes explode {
+      to {
+        transform: translate(var(--x), var(--y)) scale(2);
+        opacity: 0;
+      }
+    }
+
+    .heart-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 260px;
+      height: 260px;
+      background: #ff4d6d;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      display: none;
+      z-index: 5;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      animation: pulse 1s infinite;
+    }
+
+    .heart-container::before,
+    .heart-container::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      background: #ff4d6d;
+      border-radius: 50%;
+    }
+
+    .heart-container::before { top: -130px; left: 0; }
+    .heart-container::after { left: 130px; top: 0; }
+
+    .heart-text {
+      z-index: 10;
+      animation: blink 1s infinite;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transform: rotate(45deg);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+      50% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.1); }
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.4; }
+    }
+
+    .falling-heart {
+      position: absolute;
+      font-size: 20px;
+      color: pink;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box" id="box">
+    <p>Do you wanna be my valentine Nina?</p>
+    <button onclick="start()">Yes</button>
+    <button onclick="start()">Yes</button>
+  </div>
+
+  <div class="heart-container" id="heart">
+    <div class="heart-text">
+      <span>Karlo</span>
+      <span>❤</span>
+      <span>Nina</span>
+    </div>
+  </div>
+
+  <script>
+    function start() {
+      document.getElementById("box").style.display = "none";
+      const heart = document.getElementById("heart");
+      heart.style.display = "flex";
+
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+
+      // crna srca vatrometa
+      for (let round = 0; round < 5; round++) {
+        setTimeout(() => {
+          for (let i = 0; i < 30; i++) {
+            const fire = document.createElement("div");
+            fire.className = "firework";
+            fire.innerHTML = "❤";
+            fire.style.left = centerX + "px";
+            fire.style.top = centerY + "px";
+            fire.style.setProperty("--x", (Math.random() - 0.5) * 500 + "px");
+            fire.style.setProperty("--y", (Math.random() - 0.5) * 500 + "px");
+            document.body.appendChild(fire);
+            setTimeout(() => fire.remove(), 1200);
+          }
+        }, round * 300);
+      }
+
+      // roze srca koja padaju
+      setInterval(() => {
+        const fHeart = document.createElement("div");
+        fHeart.className = "falling-heart";
+        fHeart.innerHTML = "❤";
+        fHeart.style.left = Math.random() * window.innerWidth + "px";
+        fHeart.style.fontSize = (15 + Math.random() * 15) + "px";
+        fHeart.style.animationDuration = (3 + Math.random() * 3) + "s";
+        document.body.appendChild(fHeart);
+        setTimeout(() => fHeart.remove(), 6000);
+      }, 200);
+    }
+  </script>
+
+</body>
+</html>
